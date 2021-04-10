@@ -7,14 +7,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <img src={logo} className="app-logo" alt="logo" />
-        <a
-          className="app-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Loots list
-        </a>
+        <a className="app-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">Loots</a>
       </header>
     </div>
   )
