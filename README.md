@@ -2,6 +2,9 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Launch JSON server
+`json-server -d 1000 -p 3030 -w src/data/loots.json`
+
 ## Available Scripts
 
 In the project directory, you can run:
