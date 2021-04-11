@@ -1,22 +1,27 @@
-import React, { useEffect } from 'react'
+import React from 'react'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
 
-import { useAppSelector, useAppDispatch } from '../../store/hooks'
-import { selectStatus, selectAllItems, fetchItems } from '../../store/lootsSlice'
+import { useAppSelector } from '../../store/hooks'
+import { selectStatus, selectAllItems } from '../../store/lootsSlice'
 
 import SkeletonList from '../../components/SkeletonList/SkeletonList'
 import LootsList from '../../components/LootsList/LootsList'
 
-import './ItemList.scss'
+const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      padding: '2em'
+    }
+  })
+)
 
 function ItemList() {
-  const dispatch = useAppDispatch()
-  useEffect(() => {
-    dispatch(fetchItems({}))
-  }, [dispatch])
   const loading = useAppSelector(selectStatus) === 'loading'
   const loots = useAppSelector(selectAllItems)
+
+  const classes = useStyles()
   return (
-    <div className="item-list">
+    <div className={classes.root}>
       <LootsList loots={loots} />
       {loading && <SkeletonList />}
     </div>

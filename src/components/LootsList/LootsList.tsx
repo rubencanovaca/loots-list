@@ -1,9 +1,10 @@
 import React from 'react'
-import { List } from '@material-ui/core'
+import GridList from '@material-ui/core/GridList'
+import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 
 import { Loot } from '../../models'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { useAppSelector, useAppDispatch } from '../../store/hooks'
 import {
   selectStatus,
   selectError,
@@ -14,9 +15,23 @@ import {
 
 import LootsListItem from '../../components/LootsListItem/LootsListItem'
 
-import './LootsList.scss'
-
 type Props = { loots: Array<Loot> }
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-around',
+      overflow: 'hidden',
+      backgroundColor: theme.palette.background.paper
+    },
+    gridList: {
+      // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+      transform: 'translateZ(0)'
+    }
+  })
+)
 
 function LootsList({loots}: Props) {
   const loading = useAppSelector(selectStatus) === 'loading'
@@ -26,7 +41,7 @@ function LootsList({loots}: Props) {
 
   const dispatch = useAppDispatch()
   const onLoadMore = () => {
-    dispatch(fetchItems({ start: itemCount, limit: 20 }))
+    dispatch(fetchItems({start: itemCount, limit: 20}))
   }
 
   const [infiniteRef] = useInfiniteScroll({
@@ -37,16 +52,17 @@ function LootsList({loots}: Props) {
     rootMargin: '0px 0px 400px 0px'
   })
 
+  const classes = useStyles()
   return (
-    <div className="loots-list">
-      <List data-test="item-list">
+    <div className={classes.root}>
+      <GridList cellHeight={0} className={classes.gridList}>
         {loots.map((loot: Loot) => ((
           <LootsListItem key={loot._id} loot={loot} />
         )))}
         {hasNextPage && (
           <div ref={infiniteRef} />
         )}
-      </List>
+      </GridList>
     </div>
   )
 }

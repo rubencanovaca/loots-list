@@ -1,10 +1,18 @@
 import React from 'react'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
 
-import './NotFound.scss'
+const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      padding: '2em'
+    }
+  })
+)
 
 function NotFound() {
+  const classes = useStyles()
   return (
-    <div className="not-found">
+    <div className={classes.root}>
       <h3>Page not found</h3>
     </div>
   )
