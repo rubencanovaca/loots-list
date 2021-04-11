@@ -3,11 +3,12 @@ import { RootState, AppThunk } from './index'
 import { fetchLoots } from '../services'
 import { Loot } from '../models'
 
-const ARRAY_SIZE = 20
+const ITEMS_PER_PAGE = 20
 
 export interface LootsState {
   items: Loot[]
   hasNextPage: boolean
+  itemsPerPage: number
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: any
 }
@@ -15,17 +16,18 @@ export interface LootsState {
 const initialState: LootsState = {
   items: [],
   hasNextPage: true,
+  itemsPerPage: ITEMS_PER_PAGE,
   status: 'idle',
   error: null
 }
 
-interface FetchLootsPayload {
+interface FetchItemsPayload {
   start?: number
   limit?: number
 }
-export const asyncFetchItems = createAsyncThunk(
-  'loots/fetchLoots',
-  async ({start = 0, limit = ARRAY_SIZE}: FetchLootsPayload) => {
+export const fetchItems = createAsyncThunk(
+  'loots/fetchItems',
+  async ({start = 0, limit = ITEMS_PER_PAGE}: FetchItemsPayload) => {
     return await fetchLoots(start, limit)
   }
 )
@@ -34,34 +36,35 @@ export const lootsSlice = createSlice({
   name: 'loots',
   initialState,
   reducers: {
-    fetchMoreItems: (state) => {
-      asyncFetchItems({start: state.items.length, limit: ARRAY_SIZE})
-    },
     removeItem: (state, action: PayloadAction<string>) => {
+      console.log(state.items, action.payload)
+    },
+    updateItem: (state, action: PayloadAction<Loot>) => {
       console.log(state.items, action.payload)
     }
   },
   extraReducers: (builder) => {
     builder
-      .addCase(asyncFetchItems.pending, (state) => {
+      .addCase(fetchItems.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(asyncFetchItems.fulfilled, (state, action) => {
+      .addCase(fetchItems.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.items = state.items.concat(action.payload)
-        state.hasNextPage = action.payload.length === ARRAY_SIZE
+        state.hasNextPage = action.payload.length === state.itemsPerPage
       })
-      .addCase(asyncFetchItems.rejected, (state, action) => {
+      .addCase(fetchItems.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
       })
   }
 })
 
-export const { fetchMoreItems, removeItem } = lootsSlice.actions
+export const { removeItem, updateItem } = lootsSlice.actions
 
 export const selectError = (state: RootState) => state.loots.error
 export const selectHasNextPage = (state: RootState) => state.loots.hasNextPage
+export const selectItemsPerPage = (state: RootState) => state.loots.itemsPerPage
 export const selectStatus = (state: RootState) => state.loots.status
 export const selectAllItems = (state: RootState) => state.loots.items
 export const selectItemCount = (state: RootState) => state.loots.items.length

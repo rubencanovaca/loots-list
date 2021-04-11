@@ -3,8 +3,14 @@ import { List } from '@material-ui/core'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 
 import { Loot } from '../../models'
-import { useAppSelector } from '../../store/hooks'
-import { fetchMoreItems, selectError, selectHasNextPage, selectStatus } from '../../store/lootsSlice'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import {
+  selectStatus,
+  selectError,
+  selectHasNextPage,
+  selectItemCount,
+  fetchItems
+} from '../../store/lootsSlice'
 
 import LootsListItem from '../../components/LootsListItem/LootsListItem'
 
@@ -13,12 +19,21 @@ import './LootsList.scss'
 type Props = { loots: Array<Loot> }
 
 function LootsList({loots}: Props) {
+  const loading = useAppSelector(selectStatus) === 'loading'
+  const disabled = !!useAppSelector(selectError)
   const hasNextPage = useAppSelector(selectHasNextPage)
+  const itemCount = useAppSelector(selectItemCount)
+
+  const dispatch = useAppDispatch()
+  const onLoadMore = () => {
+    dispatch(fetchItems({ start: itemCount, limit: 20 }))
+  }
+
   const [infiniteRef] = useInfiniteScroll({
-    loading: useAppSelector(selectStatus) === 'loading',
-    disabled: !!useAppSelector(selectError),
+    loading,
+    disabled,
     hasNextPage,
-    onLoadMore: fetchMoreItems,
+    onLoadMore,
     rootMargin: '0px 0px 400px 0px'
   })
 
@@ -29,7 +44,7 @@ function LootsList({loots}: Props) {
           <LootsListItem key={loot._id} loot={loot} />
         )))}
         {hasNextPage && (
-          <div ref={infiniteRef}>Loading</div>
+          <div ref={infiniteRef} />
         )}
       </List>
     </div>

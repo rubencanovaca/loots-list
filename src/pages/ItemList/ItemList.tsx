@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { useAppSelector, useAppDispatch } from '../../store/hooks'
-import { asyncFetchItems, selectStatus, selectAllItems } from '../../store/lootsSlice'
+import { selectStatus, selectAllItems, fetchItems } from '../../store/lootsSlice'
 
 import SkeletonList from '../../components/SkeletonList/SkeletonList'
 import LootsList from '../../components/LootsList/LootsList'
@@ -11,7 +11,7 @@ import './ItemList.scss'
 function ItemList() {
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(asyncFetchItems({}))
+    dispatch(fetchItems({}))
   }, [dispatch])
   const loading = useAppSelector(selectStatus) === 'loading'
   const loots = useAppSelector(selectAllItems)
