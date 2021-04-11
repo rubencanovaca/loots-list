@@ -1,55 +1,12 @@
 import React from 'react'
-import { Skeleton } from '@material-ui/lab'
+import SkeletonListItem from '../SkeletonListItem/SkeletonListItem'
 
-const ListSkeleton = () => {
+const SkeletonList = () => {
   return (
     <div className="skeleton-list" data-test="skeleton-list">
-      <br />
-      <Skeleton />
-      <Skeleton animation={false} />
-      <Skeleton animation="wave" />
-      <br />
-      <br />
-      <Skeleton />
-      <Skeleton animation={false} />
-      <Skeleton animation="wave" />
-      <br />
-      <br />
-      <Skeleton />
-      <Skeleton animation={false} />
-      <Skeleton animation="wave" />
-      <br />
-      <br />
-      <Skeleton />
-      <Skeleton animation={false} />
-      <Skeleton animation="wave" />
-      <br />
-      <br />
-      <Skeleton />
-      <Skeleton animation={false} />
-      <Skeleton animation="wave" />
-      <br />
-      <br />
-      <Skeleton />
-      <Skeleton animation={false} />
-      <Skeleton animation="wave" />
-      <br />
-      <br />
-      <Skeleton />
-      <Skeleton animation={false} />
-      <Skeleton animation="wave" />
-      <br />
-      <br />
-      <Skeleton />
-      <Skeleton animation={false} />
-      <Skeleton animation="wave" />
-      <br />
-      <br />
-      <Skeleton />
-      <Skeleton animation={false} />
-      <Skeleton animation="wave" />
+        <SkeletonListItem />
     </div>
   )
 }
 
-export default ListSkeleton
+export default SkeletonList
