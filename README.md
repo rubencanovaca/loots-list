@@ -1,13 +1,21 @@
-# Getting Started with Create React App
+# LOOTS LIST
+*Single Page Application to manage a list of loots*
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Launch JSON server
-`json-server -d 1000 -p 3030 -w src/data/loots.json`
+### `json-server -d 1000 -p 3030 -w src/data/loots.json`
 
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `yarn install`
+
+Install all dependencies for the project.\
+Those libraries are retrieved from your project’s `package.json` file, and stored in the `yarn.lock` file.
+
+If yarn indicates that you have network connection troubles, try to use `yarn install --network-timeout 1000000000` in order to increment the default timeout of yarn (30 seconds)
 
 ### `yarn start`
 

@@ -5,7 +5,8 @@ import ItemList from './pages/ItemList/ItemList'
 import EditItem from './pages/EditItem/EditItem'
 import NotFound from './pages/NotFound/NotFound'
 
-import logo from './assets/logo.png'
+import logo from './assets/logo.svg'
+import footerLogo from './assets/footer-logo.svg'
 import './App.scss'
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
         <header className="app-header">
           <Link to="/">
             <img src={logo} className="app-logo" alt="logo" />
-            <span className="app-title">Loots</span>
+            <span className="app-title">Loots list</span>
           </Link>
         </header>
         <main className="app-main">
@@ -26,6 +27,11 @@ function App() {
             <Redirect to="/404" />
           </Switch>
         </main>
+        <footer className="app-footer">
+          <a href="https://streamloots.com" title="Streamloots">
+            <img src={footerLogo} className="app-footer-logo" alt="Streamloots" />&copy;
+          </a>
+        </footer>
       </Router>
     </div>
   )
