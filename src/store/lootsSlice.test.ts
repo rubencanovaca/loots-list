@@ -1,19 +1,18 @@
 import lootsReducer, {
-  LootsState,
-  remove
+  LootsState
 } from './lootsSlice'
 
 describe('loots reducer', () => {
   const initialState: LootsState = {
     items: [],
-    status: 'idle'
+    hasNextPage: true,
+    itemsPerPage: 20,
+    status: 'idle',
+    error: null,
+    currentItem: {id: '', imageUrl: '', name: '', count: {total: 0}},
+    text: ''
   }
   it('should handle initial state', () => {
     expect(lootsReducer(undefined, {type: 'unknown'})).toEqual(initialState)
-  })
-
-  it('should handle remove', () => {
-    const actual = lootsReducer(initialState, remove('id'))
-    expect(actual.items).toEqual(4)
   })
 })

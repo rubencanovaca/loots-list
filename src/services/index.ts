@@ -9,3 +9,8 @@ export async function fetchLoots(start: number, limit: number): Promise<Array<Lo
   const response = await httpClient.get<Array<Loot>>(`/loots?_start=${start}&_limit=${limit}`)
   return response.data
 }
+
+export async function fetchLootById(id: string): Promise<Loot> {
+  const response = await httpClient.get<Loot>(`/loots/${id}`)
+  return response.data
+}

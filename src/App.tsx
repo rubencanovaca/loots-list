@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Switch, Route, Redirect, Link, useParams } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 
 import { useAppDispatch } from './store/hooks'
@@ -85,7 +85,7 @@ function App() {
         <main className={classes.main}>
           <Switch>
             <Route exact path="/" component={ItemList} />
-            <Route exact path="/loot/:id" children={<EditItem id={useParams.id} />} />
+            <Route exact path="/loot/:id" children={<EditItem />} />
             <Route exact path="/404" component={NotFound} />
             <Redirect to="/404" />
           </Switch>

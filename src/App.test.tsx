@@ -4,6 +4,6 @@ import App from './App'
 
 test('renders header link', () => {
   render(<App />)
-  const linkElement = screen.getByText(/loots/i)
+  const linkElement = screen.getByText(/loots list/i)
   expect(linkElement).toBeInTheDocument()
 })

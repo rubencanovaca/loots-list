@@ -1,5 +1,5 @@
 export interface Loot {
-  _id: string
+  id: string
   name: string
   imageUrl: string
   count: {

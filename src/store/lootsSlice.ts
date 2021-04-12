@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState, AppThunk } from './index'
-import { fetchLoots } from '../services'
+import { RootState } from './index'
+
+import { fetchLoots, fetchLootById } from '../services'
 import { Loot } from '../models'
 
 const ITEMS_PER_PAGE = 20
@@ -10,7 +11,9 @@ export interface LootsState {
   hasNextPage: boolean
   itemsPerPage: number
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
-  error: any
+  error: any,
+  currentItem: Loot,
+  text: string
 }
 
 const initialState: LootsState = {
@@ -18,13 +21,16 @@ const initialState: LootsState = {
   hasNextPage: true,
   itemsPerPage: ITEMS_PER_PAGE,
   status: 'idle',
-  error: null
+  error: null,
+  currentItem: {id: '', imageUrl: '', name: '', count: {total: 0}},
+  text: ''
 }
 
 interface FetchItemsPayload {
   start?: number
   limit?: number
 }
+
 export const fetchItems = createAsyncThunk(
   'loots/fetchItems',
   async ({start = 0, limit = ITEMS_PER_PAGE}: FetchItemsPayload) => {
@@ -32,15 +38,34 @@ export const fetchItems = createAsyncThunk(
   }
 )
 
+export const fetchItemById = createAsyncThunk(
+  'loots/fetchItemById',
+  async (id: string, dispatch) => {
+    return await fetchLootById(id)
+  },{
+    condition: (id: string, { getState }) => {
+      const state = getState() as RootState
+      if (state.loots.items.find(i => i.id === id)) return false
+    }
+  }
+)
+
 export const lootsSlice = createSlice({
   name: 'loots',
   initialState,
   reducers: {
+    setText: (state, action: PayloadAction<string>) => {
+      state.text = action.payload
+    },
+    setCurrentItem: (state, action: PayloadAction<Loot>) => {
+      state.currentItem = action.payload
+    },
     removeItem: (state, action: PayloadAction<string>) => {
-      console.log(state.items, action.payload)
+      state.items = state.items.filter(i => i.id !== action.payload)
     },
     updateItem: (state, action: PayloadAction<Loot>) => {
-      console.log(state.items, action.payload)
+      const index = state.items.findIndex(i => i.id === action.payload.id)
+      if (state.items[index]) state.items[index] = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -57,26 +82,28 @@ export const lootsSlice = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       })
+      .addCase(fetchItemById.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(fetchItemById.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.currentItem = action.payload
+      })
+      .addCase(fetchItemById.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
+      })
   }
 })
 
-export const { removeItem, updateItem } = lootsSlice.actions
+export const {setText, setCurrentItem, removeItem, updateItem} = lootsSlice.actions
 
 export const selectError = (state: RootState) => state.loots.error
 export const selectHasNextPage = (state: RootState) => state.loots.hasNextPage
-export const selectItemsPerPage = (state: RootState) => state.loots.itemsPerPage
 export const selectStatus = (state: RootState) => state.loots.status
 export const selectAllItems = (state: RootState) => state.loots.items
 export const selectItemCount = (state: RootState) => state.loots.items.length
-export const selectItemById = (state: RootState, id: string) => state.loots.items.find(i => i._id === id)
-
-export const removeItemSecurely = (id: string): AppThunk => (
-  dispatch,
-  getState
-) => {
-  const lootsCount = selectItemCount(getState())
-  const lootExists = selectItemById(getState(), id)
-  if (lootsCount > 0 && lootExists) dispatch(removeItem(id))
-}
+export const selectCurrentItem = (state: RootState) => state.loots.currentItem
+export const selectText = (state: RootState) => state.loots.text
 
 export default lootsSlice.reducer

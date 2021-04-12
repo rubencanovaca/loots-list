@@ -8,7 +8,7 @@
     "url": "https://github.com/rubencanovaca/loots-list.git"
   },
   "scripts": {
-    "start-server": "json-server -d 1000 -p 3030 -w src/data/loots.json",
+    "start-server": "json-server -p 3030 -w src/data/loots.json",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

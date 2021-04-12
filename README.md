@@ -12,7 +12,7 @@ In the project directory, you can run:
 Install all dependencies for the project.\
 Those libraries are retrieved from your project’s `package.json` file, and stored in the `yarn.lock` file.
 
-If yarn indicates that you have network connection troubles, try to use `yarn install --network-timeout 1000000000` in order to increment the default timeout of yarn (30 seconds)
+If yarn indicates that there are network connection troubles, try to use `yarn install --network-timeout 1000000000` in order to increment the default timeout of yarn (30 seconds)
 
 ### `yarn start-server`
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import GridList from '@material-ui/core/GridList'
-import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 
 import { Loot } from '../../models'
@@ -17,14 +17,13 @@ import LootsListItem from '../../components/LootsListItem/LootsListItem'
 
 type Props = { loots: Array<Loot> }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: 'flex',
       flexWrap: 'wrap',
       justifyContent: 'space-around',
-      overflow: 'hidden',
-      backgroundColor: theme.palette.background.paper
+      overflow: 'hidden'
     },
     gridList: {
       // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
@@ -57,7 +56,7 @@ function LootsList({loots}: Props) {
     <div className={classes.root}>
       <GridList cellHeight={0} className={classes.gridList}>
         {loots.map((loot: Loot) => ((
-          <LootsListItem key={loot._id} loot={loot} />
+          <LootsListItem key={loot.id} loot={loot} />
         )))}
         {hasNextPage && (
           <div ref={infiniteRef} />

@@ -13,7 +13,7 @@ function NotFound() {
   const classes = useStyles()
   return (
     <div className={classes.root}>
-      <h3>Page not found</h3>
+      <h2>Page not found</h2>
     </div>
   )
 }
